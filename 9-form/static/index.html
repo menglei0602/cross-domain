@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>form表单跨域</title>
+  </head>
+  <body>
+
+    <h1>第1种.以html的form表单形式，发送跨域请求（纯html方式）</h1>
+    <form action="http://192.168.1.103:3001/test" method="post">
+        <div>
+          <label for="name">用户名：</label>
+          <input type="text" id="name" name="id" />
+        <div>
+        <div>
+          <input type="submit" id="submit" name="submit_button" value="html+form表单" />
+        </div>
+    </form>
+    <h1>第2种.用JavaScript生成form表单，submit发送跨域请求（存在mac设备兼容问题）</h1>
+    <input type="button" id="formSubmit" value="js+form表单"></input>
+    <!-- 或第2种方式变种 -->
+    <!-- <form id="myForm1"></form> -->
+    <h1>第3种，用JavaScript生成formData表单数据，xhr发送跨域请求成功，但是无法js获取response数据，js需借助跨域请求方式完成请求</h1>
+    <input type="button" id="formDataXhr" value="formData+xhr"></input>
+    <script>
+      
+      var generateHideElement = function (name, value) {
+        var tempInput = document.createElement("input");
+        tempInput.type = "hidden";
+        tempInput.name = name;
+        tempInput.value = value;
+        return tempInput;
+      }
+
+      document.getElementById("formSubmit").onclick = function() {
+        var form = document.createElement("form");
+        document.body.appendChild(form);
+        var id = generateHideElement("id", "11");
+        form.appendChild(id);
+        form.method = "post";
+        form.action="http://192.168.1.103:3001/test";
+        console.log(form);
+        form.submit();
+        // var myForm = document.getElementById("myForm1");
+        // myForm.method = "post";
+        // myForm.action="http://192.168.1.103:3001/test";
+        // var formData = new FormData(myForm);
+        // formData.append("id", "value1");
+        // console.log(formData);
+        // myForm.submit();
+      };
+
+      
+      document.getElementById("formDataXhr").onclick = function() {
+        var formData = new FormData();
+        formData.append("id", "value1");
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", "http://192.168.1.103:3001/test", true);
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        console.log(formData);
+        xhr.onload = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(xhr.responseText);
+          }
+        };
+        xhr.send(formData);
+      };
+    </script>
+  </body>
+</html>

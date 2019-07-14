@@ -6,6 +6,7 @@
 </head>
 <body>
 <p>hello world</p>
+<!--它的基本思想是，网页通过添加一个<script>元素，向服务器请求JSON数据，这种做法不受同源政策限制；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来。-->
 <script>
     function myFunction (data) {
         alert('获取数据成功，2s后改变数据！')
